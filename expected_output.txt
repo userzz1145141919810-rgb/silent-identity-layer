@@ -1,0 +1,35 @@
+==================================================================
+ silent identity layer - reproduction
+==================================================================
+
+[0] parameter mapping
+    raw_curvature = 0.01  ->  curvature = 0.699160
+    (the config comment said 'curvature_init = 0.01')
+
+[1] boost with phi = 0
+    max|boost(h) - h| = 0.000e+00   -> identity
+
+[2] round trip logmap(expmap(u))
+    max|logmap(expmap(u)) - u| = 7.119e-13   -> exact inverse
+
+[3] layer output with phi = 0, gate_logit = 0
+    max|out - (0.25*x/||x|| + 0.5*x)| = 3.559e-13
+    -> the layer is a fixed affine map; no geometry involved
+
+[4] curvature sensitivity (phi = 0)
+    curvature 0.01 -> 5.0 changes output by 2.439e-13
+    -> d(loss)/d(curvature) == 0; curvature can never learn
+
+[5] control: phi = 0.8, gate_logit = 1.0
+    curvature 0.01 -> 5.0 changes output by 2.439e-01
+    -> with a non-zero boost the curvature is live
+
+[6] boost strength vs phi
+    phi = 0.00   relative change = 0.0000
+    phi = 0.01   relative change = 0.0084
+    phi = 0.05   relative change = 0.0417
+    phi = 0.10   relative change = 0.0833
+    phi = 0.50   relative change = 0.4226
+    phi = 0.80   relative change = 0.7076
+
+==================================================================
